@@ -83,10 +83,11 @@ listen(Opts) ->
 	Opts3 = ranch:set_option_default(Opts2, nodelay, true),
 	Opts4 = ranch:set_option_default(Opts3, send_timeout, 30000),
 	Opts5 = ranch:set_option_default(Opts4, send_timeout_close, true),
+    Port = proplists:get_value(port, Opts),
 	%% We set the port to 0 because it is given in the Opts directly.
 	%% The port in the options takes precedence over the one in the
 	%% first argument.
-	gen_socket:listen(0, ranch:filter_options(Opts5, disallowed_listen_options(),
+	gen_socket:listen(Port, ranch:filter_options(Opts5, disallowed_listen_options(),
 		[binary, {active, false}, {packet, raw}, {reuseaddr, true}])).
 
 %% 'binary' and 'list' are disallowed but they are handled
